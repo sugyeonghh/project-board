@@ -1,0 +1,44 @@
+server:
+  port: ${PORT:8080}
+
+spring:
+  application:
+    name: pmboard-server
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/pmboard?serverTimezone=Asia/Seoul&characterEncoding=UTF-8}
+    username: ${DB_USER:pmboard}
+    password: ${DB_PASSWORD:pmboard}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none   # 스키마는 Flyway(db/migration)로만 관리
+    properties:
+      hibernate:
+        jdbc.time_zone: Asia/Seoul
+  flyway:
+    enabled: true
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 60MB
+  jackson:
+    time-zone: Asia/Seoul
+
+pmboard:
+  # JWT 서명 키 (32자 이상). 운영에서는 반드시 환경변수로 바꿀 것
+  jwt-secret: ${PMBOARD_JWT_SECRET:change-me-change-me-change-me-change-me}
+  jwt-expire-hours: 12
+  # AI 키 등 민감한 설정값을 DB에 암호화해 넣을 때 쓰는 키 (Base64, 32바이트)
+  # 생성 예: openssl rand -base64 32
+  secret-key: ${PMBOARD_SECRET_KEY:}
+  # 첨부파일 저장 폴더
+  storage-dir: ${PMBOARD_STORAGE_DIR:./data/attachments}
+  # 최초 실행 시 만들어지는 관리자 계정
+  admin-username: ${PMBOARD_ADMIN_USER:admin}
+  admin-password: ${PMBOARD_ADMIN_PASSWORD:}
+  # 윈도우 앱(Tauri)과 개발 서버에서 오는 요청 허용
+  cors-origins: ${PMBOARD_CORS:http://localhost:1420,http://tauri.localhost,https://tauri.localhost,tauri://localhost}
+
+logging:
+  level:
+    com.pmboard: INFO

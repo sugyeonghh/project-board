@@ -1,0 +1,17 @@
+# 공통
+.idea/
+.vscode/
+*.log
+.DS_Store
+
+# 서버
+server/build/
+server/.gradle/
+server/data/
+server/.env
+
+# 윈도우 앱
+desktop/node_modules/
+desktop/dist/
+desktop/src-tauri/target/
+desktop/src-tauri/gen/
