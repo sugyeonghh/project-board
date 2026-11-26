@@ -54,7 +54,7 @@ function useWidth<T extends HTMLElement>() {
   return [ref, width] as const;
 }
 
-const COLOR: Record<string, string> = { DONE: "#2f9e5b", IN_PROGRESS: "#2f5bea", BLOCKED: "#dc4b4b", TODO: "#c5cbd4" };
+const COLOR: Record<string, string> = { DONE: "#2f9e5b", IN_PROGRESS: "#2f5bea", BLOCKED: "#dc4b4b", TODO: "var(--line-strong)" };
 
 /** 프로젝트 상단 "일정 · 마일스톤": 주 단위 축 + 마일스톤 ◆ + 할일 막대 + 오늘 선 */
 export default function ScheduleStrip({ start, end, milestones, tasks }: {
@@ -117,7 +117,7 @@ export default function ScheduleStrip({ start, end, milestones, tasks }: {
           )}
           <div className="gantt-row">
             <span />
-            <div ref={trackRef} style={{ position: "relative", height: 18, fontSize: 11, color: "#5b6472" }}>
+            <div ref={trackRef} style={{ position: "relative", height: 18, fontSize: 11, color: "var(--muted)" }}>
               {axis.map((w, i) => (
                 <span key={w} style={{ position: "absolute", left: pct(w), whiteSpace: "nowrap",
                   transform: frac(w) > 0.94 ? "translateX(-100%)" : undefined }}>{tickLabel(w, unit, i === 0)}</span>
@@ -126,7 +126,7 @@ export default function ScheduleStrip({ start, end, milestones, tasks }: {
           </div>
           <div className="gantt-row">
             <strong style={{ fontSize: 13 }}>마일스톤</strong>
-            <div style={{ position: "relative", height: msHeight, background: "#f9fafb", borderRadius: 8 }}>
+            <div style={{ position: "relative", height: msHeight, background: "var(--surface-2)", borderRadius: 8 }}>
               {lanes.map(({ m, label, align, f, lane }) => {
                 const left = `${(f * 100).toFixed(2)}%`;
                 const shift = align === "right" ? "-100%" : align === "center" ? "-50%" : "0";
@@ -139,11 +139,11 @@ export default function ScheduleStrip({ start, end, milestones, tasks }: {
                         background: m.done ? tone : `${tone}33`, border: `2px solid ${tone}`, boxSizing: "border-box" }} />
                     ) : (
                       <span style={{ position: "absolute", top: 8, left, width: 12, height: 12, marginLeft: -6, transform: "rotate(45deg)",
-                        background: m.done ? tone : "#fff", border: m.done ? 0 : `2px solid ${tone}` }} />
+                        background: m.done ? tone : "var(--card)", border: m.done ? 0 : `2px solid ${tone}` }} />
                     )}
-                    {lane > 0 && <span style={{ position: "absolute", top: 22, left, width: 1, height: lane * LANE_H + 4, background: "#d5d9e0" }} />}
+                    {lane > 0 && <span style={{ position: "absolute", top: 22, left, width: 1, height: lane * LANE_H + 4, background: "var(--input)" }} />}
                     <span style={{ position: "absolute", top: 26 + lane * LANE_H, left, transform: `translateX(${shift})`, fontSize: 11, whiteSpace: "nowrap",
-                      lineHeight: `${LANE_H}px`, padding: "0 3px", background: "#f9fafb", zIndex: 1, fontWeight: m === next ? 700 : 400, color: m.done ? "#166534" : "#374151" }}>{label}</span>
+                      lineHeight: `${LANE_H}px`, padding: "0 3px", background: "var(--surface-2)", zIndex: 1, fontWeight: m === next ? 700 : 400, color: m.done ? "var(--green-text)" : "var(--text-2)" }}>{label}</span>
                   </span>
                 );
               })}
@@ -154,7 +154,7 @@ export default function ScheduleStrip({ start, end, milestones, tasks }: {
             const b = t.dueDate ?? t.startDate!;
             return (
               <div key={t.id} className="gantt-row">
-                <span style={{ fontSize: 13, color: "#374151", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{t.title}</span>
+                <span style={{ fontSize: 13, color: "var(--text-2)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{t.title}</span>
                 <div className="gantt-track">
                   <span title={`${md(a)} – ${md(b)}`} style={{ left: pct(a), width: `${((daysBetween(a, b) + 1) / span) * 100}%`, background: COLOR[t.status] }} />
                 </div>

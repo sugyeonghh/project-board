@@ -15,7 +15,7 @@ export default function ProjectsPage() {
       {data.length === 0 && <div className="card empty">참여 중인 진행 프로젝트가 없어요.</div>}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 16 }}>
         {data.map((p) => (
-          <Link key={p.id} to={`/projects/${p.id}`} className="card card-pad" style={{ color: "#111827", display: "flex", flexDirection: "column", gap: 10 }}>
+          <Link key={p.id} to={`/projects/${p.id}`} className="card card-pad" style={{ color: "var(--text)", display: "flex", flexDirection: "column", gap: 10 }}>
             <div className="row"><Badge status={p.status}>{projectStatusLabel[p.status]}</Badge><span className="muted">우선순위 {priorityLabel[p.priority]}</span></div>
             <h2>{p.name}</h2>
             <p className="muted" style={{ fontSize: 13 }}>{p.description}</p>

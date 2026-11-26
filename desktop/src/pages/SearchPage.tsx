@@ -39,7 +39,7 @@ export default function SearchPage() {
     <>
       <h1>통합 검색</h1>
       <form onSubmit={(e) => { e.preventDefault(); setParams(input.trim() ? { q: input.trim() } : {}); }}>
-        <input aria-label="통합 검색어" style={{ width: "100%", height: 52, fontSize: 16, border: "2px solid #2f5bea", borderRadius: 12 }}
+        <input aria-label="통합 검색어" style={{ width: "100%", height: 52, fontSize: 16, border: "2px solid var(--accent)", borderRadius: 12 }}
                placeholder="프로젝트, 할일, 노트, 첨부파일, 코멘트, 메모, 운영업무, 변경 이력" value={input} onChange={(e) => setInput(e.target.value)} autoFocus />
       </form>
       <div className="tabs" role="tablist">
@@ -57,9 +57,9 @@ export default function SearchPage() {
         if (!items.length) return null;
         return (
           <section key={t} className="card" style={{ overflow: "hidden" }}>
-            <div className="thead row" style={{ padding: "12px 20px" }}><h2 style={{ fontSize: 15, color: "#111827" }}>{label}</h2><span>{items.length}건</span></div>
+            <div className="thead row" style={{ padding: "12px 20px" }}><h2 style={{ fontSize: 15, color: "var(--text)" }}>{label}</h2><span>{items.length}건</span></div>
             {items.map((r) => (
-              <Link key={`${r.type}${r.id}`} to={href(r)} className="list-row" style={{ display: "block", color: "#111827" }}>
+              <Link key={`${r.type}${r.id}`} to={href(r)} className="list-row" style={{ display: "block", color: "var(--text)" }}>
                 <div style={{ fontSize: 15 }}>{highlight(r.title)}</div>
                 <div className="muted" style={{ marginTop: 3 }}>{r.context}</div>
               </Link>

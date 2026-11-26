@@ -95,7 +95,7 @@ export default function OpsPage() {
                     <div key={o.id} className="list-row" style={{ display: "grid", gridTemplateColumns: OPS_COLS, gap: 12, alignItems: "center" }}>
                       <span><span className={`badge badge-${CAT_TONE[o.category]}`} style={{ borderRadius: 6 }}>{opsCategoryLabel[o.category]}</span></span>
                       <button type="button" className="ops-open" onClick={() => setOpen(o.id)} title="눌러서 상세 보기">
-                        <div style={{ fontWeight: 500, color: isDone ? "#5b6472" : undefined, textDecoration: isDone ? "line-through" : undefined,
+                        <div style={{ fontWeight: 500, color: isDone ? "var(--muted)" : undefined, textDecoration: isDone ? "line-through" : undefined,
                           overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{o.title}</div>
                         <div className="muted" style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                           요청 {o.requester || "—"} · 담당 {o.assignee?.name ?? "—"} · {md(o.workDate)}
@@ -131,12 +131,12 @@ export default function OpsPage() {
               const items = routines.data?.filter((r) => r.cycle === c) ?? [];
               if (!items.length) return null;
               return (
-                <div key={c} style={{ padding: "8px 0", borderTop: "1px solid #eef0f3" }}>
+                <div key={c} style={{ padding: "8px 0", borderTop: "1px solid var(--line-soft)" }}>
                   <p style={{ fontSize: 12, fontWeight: 700, margin: "4px 0" }}>{CYCLE[c]}</p>
                   {items.map((r) => (
                     <label key={r.id} className="row" style={{ padding: "6px 0", cursor: "pointer" }}>
                       <input type="checkbox" checked={r.done} onChange={() => toggleRoutine.mutate(r.id)} style={{ width: 17, height: 17, padding: 0 }} />
-                      <span className="grow" style={r.done ? { color: "#5b6472", textDecoration: "line-through" } : undefined}>{r.name}</span>
+                      <span className="grow" style={r.done ? { color: "var(--muted)", textDecoration: "line-through" } : undefined}>{r.name}</span>
                       <span className="muted">{md(r.nextDue)}</span>
                     </label>
                   ))}

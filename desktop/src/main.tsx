@@ -5,6 +5,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import App from "./App";
 import { AuthProvider } from "./lib/auth";
 import "./styles.css";
+import { initTheme } from "./lib/theme";
+
+// 첫 화면이 그려지기 전에 테마를 정해 깜빡임을 막는다
+initTheme();
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { staleTime: 15_000, retry: 1, refetchOnWindowFocus: true } },

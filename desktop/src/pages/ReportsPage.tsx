@@ -58,8 +58,8 @@ export default function ReportsPage() {
         </span>
       </div>
       {!connected && tab !== "ARCHIVE" && (
-        <div className="row wrap" style={{ padding: "14px 18px", borderRadius: 12, background: "#fff8e6", border: "1px solid #f2dfa6" }}>
-          <span className="grow" style={{ minWidth: 300, color: "#5c4a12", lineHeight: 1.6 }}>
+        <div className="row wrap" style={{ padding: "14px 18px", borderRadius: 12, background: "var(--yellow-soft)", border: "1px solid var(--yellow-border)" }}>
+          <span className="grow" style={{ minWidth: 300, color: "var(--yellow-text)", lineHeight: 1.6 }}>
             AI가 아직 연결되지 않았어요. 지금은 데이터를 양식에 맞춰 정리한 <strong>기본 초안</strong>만 만들 수 있어요.
             {user?.role === "ADMIN" ? " 설정에서 API 키를 연결하면 AI가 문장을 다듬고 요약해 줘요." : " 관리자에게 AI 연결을 요청해 주세요."}
           </span>
@@ -111,7 +111,7 @@ export default function ReportsPage() {
                 </>
               )}
             </div>
-            {generate.isPending && <div className="empty" style={{ color: "#1e40af" }}>자료를 모아 정리하는 중…</div>}
+            {generate.isPending && <div className="empty" style={{ color: "var(--accent-strong)" }}>자료를 모아 정리하는 중…</div>}
             {generate.error && <p className="error" style={{ padding: 20 }}>{(generate.error as Error).message}</p>}
             {!report && !generate.isPending && <div className="empty">왼쪽에서 옵션을 고르고 작성 버튼을 눌러 주세요.</div>}
             {report && !generate.isPending && (edit === null ? (
@@ -174,9 +174,9 @@ function Archive({ onOpen }: { onOpen: (r: Report) => void }) {
         {list.length === 0 && <div className="card empty">이 달의 보고서가 없어요.</div>}
         {[...weeks.entries()].map(([label, items]) => (
           <div key={label} className="card" style={{ overflow: "hidden" }}>
-            <div className="thead" style={{ padding: "10px 18px", fontSize: 14, fontWeight: 700, color: "#111827" }}>{label}</div>
+            <div className="thead" style={{ padding: "10px 18px", fontSize: 14, fontWeight: 700, color: "var(--text)" }}>{label}</div>
             {items.map((r) => (
-              <div key={r.id} style={{ borderTop: "1px solid #eef0f3" }}>
+              <div key={r.id} style={{ borderTop: "1px solid var(--line-soft)" }}>
                 <button className="list-row clickable" aria-expanded={open === r.id} onClick={() => setOpen(open === r.id ? null : r.id)}>
                   <span style={{ width: 60, fontSize: 13 }}>{md(r.periodStart)}</span>
                   <span className={`badge badge-${r.type === "WEEKLY" ? "blue" : "gray"}`} style={{ borderRadius: 6 }}>{r.type === "WEEKLY" ? "주간보고" : "일일 일지"}</span>

@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api, getServer } from "../api/client";
 import type { AiSettings, ReportSettings, UserInfo, UserRef } from "../api/types";
 import { useAuth } from "../lib/auth";
+import { useTheme, type ThemePref } from "../lib/theme";
 
 export default function SettingsPage() {
   const { user } = useAuth();
@@ -10,6 +11,7 @@ export default function SettingsPage() {
   return (
     <div className="stack" style={{ maxWidth: 920, gap: 20 }}>
       <h1>설정</h1>
+      <ThemeSection />
       {admin && <AiSection />}
       {admin && <ReportSection />}
       {admin && <UsersSection />}
@@ -17,7 +19,7 @@ export default function SettingsPage() {
       <section className="card card-pad stack" style={{ gap: 10 }}>
         <h2 style={{ fontSize: 18 }}>외부 연동</h2>
         {[["Jira", "프로젝트·할일 상태 동기화, 이슈 키 연결"], ["Confluence", "일일 업무 일지·주간보고를 지정한 스페이스에 게시"]].map(([n, d]) => (
-          <div key={n} className="row wrap" style={{ padding: "14px 16px", border: "1px solid #e4e7ec", borderRadius: 10 }}>
+          <div key={n} className="row wrap" style={{ padding: "14px 16px", border: "1px solid var(--line)", borderRadius: 10 }}>
             <span className="grow"><div style={{ fontWeight: 500, fontSize: 15 }}>{n}</div><div className="muted">{d}</div></span>
             <span className="badge badge-gray">준비 중</span>
           </div>
@@ -71,7 +73,7 @@ function AiSection() {
       </div>
       <p className="muted">키는 서버에 암호화해서 저장하고, 저장한 뒤에는 화면에 다시 보여주지 않아요. 보고서에 들어가는 내용만 AI로 전송돼요.</p>
       {(save.error || runTest.error) && <p className="error">{((save.error ?? runTest.error) as Error).message}</p>}
-      {test && <p style={{ color: test.ok ? "#166534" : "#b91c1c" }}>{test.message}</p>}
+      {test && <p style={{ color: test.ok ? "var(--green-text)" : "var(--red-text)" }}>{test.message}</p>}
       <div className="row wrap">
         <button className="btn btn-primary" onClick={() => save.mutate(false)} disabled={save.isPending}>저장</button>
         <button className="btn" onClick={() => runTest.mutate()} disabled={!data?.hasKey || runTest.isPending}>{runTest.isPending ? "확인 중…" : "연결 테스트"}</button>
@@ -153,6 +155,45 @@ function UsersSection() {
   );
 }
 
+/** 미리보기 색: [배경, 카드, 줄, 강조] */
+const THEMES: { value: ThemePref; label: string; desc: string; swatch: string[][] }[] = [
+  { value: "light", label: "밝은 테마", desc: "항상 밝게", swatch: [["#f6f7f9", "#ffffff", "#d5d9e0", "#2f5bea"]] },
+  { value: "dark", label: "어두운 테마", desc: "항상 어둡게", swatch: [["#0f1217", "#181c24", "#3a4250", "#5b7ff0"]] },
+  { value: "system", label: "시스템 설정", desc: "윈도우 설정을 따라 자동으로", swatch: [["#f6f7f9", "#ffffff", "#d5d9e0", "#2f5bea"], ["#0f1217", "#181c24", "#3a4250", "#5b7ff0"]] },
+];
+
+function ThemeSection() {
+  const [pref, setPref] = useTheme();
+  return (
+    <section className="card card-pad stack" style={{ gap: 12 }}>
+      <div>
+        <h2 style={{ fontSize: 18 }}>화면 테마</h2>
+        <p className="muted" style={{ marginTop: 4 }}>이 PC에만 적용돼요.</p>
+      </div>
+      <div className="theme-pick" role="radiogroup" aria-label="화면 테마">
+        {THEMES.map((t) => (
+          <button key={t.value} type="button" role="radio" aria-checked={pref === t.value}
+                  className={`theme-opt${pref === t.value ? " on" : ""}`} onClick={() => setPref(t.value)}>
+            <span className="theme-swatch" aria-hidden>
+              {t.swatch.map(([bg, card, line, accent], i) => (
+                <span key={i} style={{ background: bg }}>
+                  <i style={{ background: accent, width: "45%" }} />
+                  <i style={{ background: card, border: `1px solid ${line}`, height: 18 }} />
+                  <i style={{ background: line, width: "70%" }} />
+                </span>
+              ))}
+            </span>
+            <span>
+              <span style={{ display: "block", fontWeight: 500 }}>{pref === t.value ? "● " : ""}{t.label}</span>
+              <span className="muted">{t.desc}</span>
+            </span>
+          </button>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function PasswordSection() {
   const [cur, setCur] = useState("");
   const [next, setNext] = useState("");
@@ -164,7 +205,7 @@ function PasswordSection() {
         <input required type="password" placeholder="현재 비밀번호" autoComplete="current-password" value={cur} onChange={(e) => setCur(e.target.value)} />
         <input required type="password" placeholder="새 비밀번호" autoComplete="new-password" value={next} onChange={(e) => setNext(e.target.value)} />
         <button className="btn">변경</button>
-        {change.isSuccess && <span style={{ color: "#166534" }}>변경했어요</span>}
+        {change.isSuccess && <span style={{ color: "var(--green-text)" }}>변경했어요</span>}
         {change.error && <span className="error">{(change.error as Error).message}</span>}
       </form>
     </section>

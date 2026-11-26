@@ -30,7 +30,7 @@ export default function ArchivePage() {
       {groups.length === 0 && <div className="card empty">해당하는 프로젝트가 없어요.</div>}
       {groups.map((g) => (
         <section key={g.year} className="stack" style={{ gap: 14 }}>
-          <div className="row" style={{ borderBottom: "2px solid #111827", paddingBottom: 8 }}>
+          <div className="row" style={{ borderBottom: "2px solid var(--text)", paddingBottom: 8 }}>
             <h2 style={{ fontSize: 22 }}>{g.year}</h2><span className="muted">{g.projects.length}건</span>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 16 }}>
@@ -39,7 +39,7 @@ export default function ArchivePage() {
                 <div className="row"><Badge status={p.status}>{projectStatusLabel[p.status]}</Badge>
                   <span className="muted">{md(p.startDate)} – {md(p.closedOn ?? p.endDate)}</span></div>
                 <h3 style={{ fontSize: 17 }}>{p.name}</h3>
-                <p style={{ lineHeight: 1.6, color: "#374151" }}>{p.description}</p>
+                <p style={{ lineHeight: 1.6, color: "var(--text-2)" }}>{p.description}</p>
                 <p className="muted">책임자 {p.owner?.name} · 할일 {p.totalCount}개 · 완료 {p.doneCount}개</p>
                 <Link to={`/projects/${p.id}`} className="btn" style={{ textAlign: "center", lineHeight: "40px" }}>프로젝트 열기</Link>
               </article>

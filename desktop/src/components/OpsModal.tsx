@@ -101,7 +101,7 @@ export default function OpsModal({ opsId, onClose }: { opsId: number; onClose: (
               </div>
             </div>
 
-            <aside style={{ flex: "1 1 250px", minWidth: 0, background: "#f9fafb", borderRadius: 12, padding: "16px 18px",
+            <aside style={{ flex: "1 1 250px", minWidth: 0, background: "var(--surface-2)", borderRadius: 12, padding: "16px 18px",
               display: "grid", gridTemplateColumns: "72px minmax(0,1fr)", gap: "10px 8px", alignItems: "center", fontSize: 14 }}>
               <span className="muted">상태</span>
               <select value={form.status} onChange={(e) => set("status", e.target.value as OpsStatus)}>

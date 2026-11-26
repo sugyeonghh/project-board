@@ -134,8 +134,8 @@ export default function CalendarPage() {
       <div className="row wrap" style={{ alignItems: "flex-start", gap: 20 }}>
         <section className="card table-scroll" style={{ flex: "999 1 640px", minWidth: 0 }}>
           <div style={{ minWidth: 700 }}>
-            <div className="cal thead" style={{ borderBottom: "1px solid #e4e7ec" }}>
-              {"일월화수목금토".split("").map((d, i) => <span key={d} style={{ padding: "10px 12px", color: i === 0 ? "#b91c1c" : i === 6 ? "#1e40af" : undefined }}>{d}</span>)}
+            <div className="cal thead" style={{ borderBottom: "1px solid var(--line)" }}>
+              {"일월화수목금토".split("").map((d, i) => <span key={d} style={{ padding: "10px 12px", color: i === 0 ? "var(--red-text)" : i === 6 ? "var(--accent-strong)" : undefined }}>{d}</span>)}
             </div>
             {weeks.map((week) => {
               const ws = toIso(week[0]);
@@ -149,9 +149,9 @@ export default function CalendarPage() {
                       const inMonth = d.getMonth() === cursor.getMonth();
                       const dayEvents = singles.filter((e) => e.date === iso);
                       return (
-                        <div key={iso} className="cal-cell" style={{ background: inMonth ? "#fff" : "#fafafb" }}>
+                        <div key={iso} className="cal-cell" style={{ background: inMonth ? "var(--card)" : "var(--surface-dim)" }}>
                           <span style={{ alignSelf: "flex-start", minWidth: 24, height: 24, borderRadius: 999, fontSize: 13, display: "flex", alignItems: "center", justifyContent: "center",
-                            ...(iso === today ? { background: "#2f5bea", color: "#fff", fontWeight: 700 } : { color: inMonth ? undefined : "#9aa1ac" }) }}>{d.getDate()}</span>
+                            ...(iso === today ? { background: "#2f5bea", color: "#fff", fontWeight: 700 } : { color: inMonth ? undefined : "var(--disabled)" }) }}>{d.getDate()}</span>
                           {/* 기간 선이 지나갈 자리 */}
                           {lanes > 0 && <span aria-hidden style={{ height: lanes * LANE_H, flex: "none" }} />}
                           {dayEvents.slice(0, 3).map((e) => (
@@ -171,7 +171,7 @@ export default function CalendarPage() {
                       <Link key={`${e.type}${e.id}-${ws}`} to={href(e)} title={`${e.projectName} · ${e.title} (${when(e)})`}
                             style={{ position: "absolute", top: LANE_TOP + lane * LANE_H, height: LANE_H - 2,
                               left: `calc(${(col / 7) * 100}% + ${head ? 6 : 0}px)`, width: `calc(${(span / 7) * 100}% - ${(head ? 6 : 0) + (tail ? 6 : 0)}px)`,
-                              display: "flex", flexDirection: "column", justifyContent: "flex-end", color: "#374151", textDecoration: "none" }}>
+                              display: "flex", flexDirection: "column", justifyContent: "flex-end", color: "var(--text-2)", textDecoration: "none" }}>
                         <span style={{ fontSize: 10, lineHeight: "11px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
                           fontWeight: bold(e) ? 700 : 400, paddingLeft: head ? 0 : 4 }}>
                           {head ? "" : "… "}{icon(e)}{e.title}
@@ -190,7 +190,7 @@ export default function CalendarPage() {
           <h2 style={{ fontSize: 16 }}>다가오는 일정</h2>
           {upcoming.length === 0 && <p className="muted" style={{ marginTop: 8 }}>{scope === "mine" ? "내 프로젝트에 예정된 일정이 없어요." : "예정된 일정이 없어요."}</p>}
           {upcoming.map((e) => (
-            <Link key={`${e.type}${e.id}`} to={href(e)} className="row" style={{ padding: "10px 0", borderTop: "1px solid #eef0f3", color: "#111827", alignItems: "flex-start" }}>
+            <Link key={`${e.type}${e.id}`} to={href(e)} className="row" style={{ padding: "10px 0", borderTop: "1px solid var(--line-soft)", color: "var(--text)", alignItems: "flex-start" }}>
               <span style={{ width: isPeriod(e) ? 92 : 44, fontWeight: 700, flex: "none", fontSize: isPeriod(e) ? 13 : undefined }}>{when(e)}</span>
               <span className="grow"><div style={{ fontWeight: bold(e) ? 700 : 400 }}>{icon(e)}{e.title}</div>
                 <div className="muted">{e.projectName}{isPeriod(e) && e.date <= today ? " · 진행 중" : ""}</div></span>

@@ -52,7 +52,7 @@ export function ConfirmDialog({ title, children, confirmLabel = "확인", danger
       <div role="alertdialog" aria-modal="true" aria-labelledby="confirm-title" className="card card-pad stack"
            style={{ width: "min(440px, 100%)", gap: 14 }}>
         <h2 id="confirm-title" style={{ fontSize: 18 }}>{title}</h2>
-        {children && <div style={{ fontSize: 14, lineHeight: 1.6, color: "#374151" }}>{children}</div>}
+        {children && <div style={{ fontSize: 14, lineHeight: 1.6, color: "var(--text-2)" }}>{children}</div>}
         <div className="row" style={{ justifyContent: "flex-end", gap: 8 }}>
           <button className="btn" autoFocus onClick={onCancel} disabled={busy}>취소</button>
           <button className={`btn ${danger ? "btn-danger-solid" : "btn-primary"}`} onClick={onConfirm} disabled={busy}>

@@ -35,15 +35,15 @@ export default function MemosPage() {
       <Chips value={filter} onChange={setFilter} options={[{ value: "ALL", label: "전체" }, { value: "PIN", label: "고정" }]} />
       <section style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 16 }}>
         {list.map((m) => (
-          <article key={m.id} className="card card-pad stack" style={{ gap: 12, ...(m.pinned ? { background: "#fffbeb", borderColor: "#f2e2a8" } : {}) }}>
+          <article key={m.id} className="card card-pad stack" style={{ gap: 12, ...(m.pinned ? { background: "var(--yellow-soft)", borderColor: "var(--yellow-border)" } : {}) }}>
             <div className="row">
               <span className="muted grow">{md(m.updatedAt)}</span>
               <button className="btn-link" aria-pressed={m.pinned} onClick={() => pin.mutate(m)}>{m.pinned ? "고정 해제" : "고정"}</button>
             </div>
             <p style={{ whiteSpace: "pre-wrap", lineHeight: 1.65, flex: 1 }}>{m.body}</p>
-            <div className="row" style={{ borderTop: "1px solid #eef0f3", paddingTop: 10 }}>
+            <div className="row" style={{ borderTop: "1px solid var(--line-soft)", paddingTop: 10 }}>
               {m.tag && <span className="badge badge-gray" style={{ borderRadius: 6 }}>{m.tag}</span>}
-              <button className="btn-link" style={{ marginLeft: "auto", color: "#9b1c1c" }} onClick={() => confirm("메모를 삭제할까요?") && remove.mutate(m.id)}>삭제</button>
+              <button className="btn-link" style={{ marginLeft: "auto", color: "var(--red-text-2)" }} onClick={() => confirm("메모를 삭제할까요?") && remove.mutate(m.id)}>삭제</button>
             </div>
           </article>
         ))}

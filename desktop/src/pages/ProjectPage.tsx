@@ -65,7 +65,7 @@ export default function ProjectPage() {
         <ConfirmDialog title="프로젝트를 삭제할까요?" confirmLabel="삭제" danger busy={removeProject.isPending}
                        onConfirm={() => removeProject.mutate()} onCancel={() => setAskDelete(false)}>
           <p><strong>{p.name}</strong> 프로젝트를 삭제하면 할일 {p.totalCount}개, 마일스톤, 지식노트, 첨부파일, 결정 로그가 모두 함께 지워져요.</p>
-          <p style={{ color: "#b91c1c", marginTop: 6 }}>삭제한 뒤에는 되돌릴 수 없어요.</p>
+          <p style={{ color: "var(--red-text)", marginTop: 6 }}>삭제한 뒤에는 되돌릴 수 없어요.</p>
           {removeProject.error && <p className="error" style={{ marginTop: 6 }}>{(removeProject.error as Error).message}</p>}
         </ConfirmDialog>
       )}
@@ -91,10 +91,10 @@ export default function ProjectPage() {
             <div style={{ marginTop: 8 }}><Progress value={p.progress} color={p.status === "AT_RISK" ? "#ea7a1a" : undefined} /></div>
           </div>
         </div>
-        <div style={{ borderTop: "1px solid #eef0f3", paddingTop: 18 }}>
+        <div style={{ borderTop: "1px solid var(--line-soft)", paddingTop: 18 }}>
           <ScheduleStrip start={p.startDate} end={p.endDate} milestones={milestones.data ?? []} tasks={tasks.data ?? []} />
         </div>
-        <div className="tabs" role="tablist" style={{ margin: "0 -24px", padding: "0 16px", borderTop: "1px solid #eef0f3", borderBottom: 0 }}>
+        <div className="tabs" role="tablist" style={{ margin: "0 -24px", padding: "0 16px", borderTop: "1px solid var(--line-soft)", borderBottom: 0 }}>
           {([
             ["overview", "개요 · 할일"], ["notes", `지식노트 ${notes.data?.length ?? ""}`], ["files", `첨부파일 ${files.data?.length ?? ""}`],
             ["decisions", "결정 로그"], ["history", "변경 이력"],
@@ -120,12 +120,12 @@ function Meta({ label, value }: { label: string; value: string }) {
 }
 
 // 개요 · 할일 ------------------------------------------------------------------
-const TILE = { background: "#f9fafb", border: "1px solid #e4e7ec", borderRadius: 10, padding: "16px 18px" };
+const TILE = { background: "var(--surface-2)", border: "1px solid var(--line)", borderRadius: 10, padding: "16px 18px" };
 
 function Lines({ text }: { text: string | null }) {
   const lines = (text ?? "").split("\n").map((s) => s.trim()).filter(Boolean);
   if (!lines.length) return <p className="muted">아직 적지 않았어요.</p>;
-  return <ul style={{ margin: 0, paddingLeft: 18, lineHeight: 1.7, color: "#374151" }}>{lines.map((l, i) => <li key={i}>{l}</li>)}</ul>;
+  return <ul style={{ margin: 0, paddingLeft: 18, lineHeight: 1.7, color: "var(--text-2)" }}>{lines.map((l, i) => <li key={i}>{l}</li>)}</ul>;
 }
 
 function OverviewTab({ project: p, tasks, milestones, onOpen, canEdit, participants }: {
@@ -175,14 +175,14 @@ function OverviewTab({ project: p, tasks, milestones, onOpen, canEdit, participa
         <section className="card card-pad">
           <h2 style={{ marginBottom: 16 }}>프로젝트 개요</h2>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 12 }}>
-            <div style={{ gridColumn: "1 / -1", background: "#eef3fe", borderRadius: 10, padding: "16px 18px" }}>
-              <p style={{ fontSize: 13, fontWeight: 700, color: "#1e40af", marginBottom: 6 }}>목표</p>
+            <div style={{ gridColumn: "1 / -1", background: "var(--blue-soft)", borderRadius: 10, padding: "16px 18px" }}>
+              <p style={{ fontSize: 13, fontWeight: 700, color: "var(--accent-strong)", marginBottom: 6 }}>목표</p>
               <p style={{ fontSize: 15, fontWeight: 500, lineHeight: 1.6 }}>{p.goal || <span className="muted">편집에서 목표를 적어 주세요.</span>}</p>
             </div>
             <div style={TILE}><p style={{ fontSize: 13, fontWeight: 700, marginBottom: 8 }}>범위</p><Lines text={p.scope} /></div>
-            <div style={TILE}><p style={{ fontSize: 13, fontWeight: 700, marginBottom: 8, color: "#9a3412" }}>제외 범위</p><Lines text={p.outOfScope} /></div>
-            <div style={TILE}><p style={{ fontSize: 13, fontWeight: 700, marginBottom: 8, color: "#166534" }}>완료 기준</p><Lines text={p.doneCriteria} /></div>
-            <div style={TILE}><p style={{ fontSize: 13, fontWeight: 700, marginBottom: 8, color: "#5b21b6" }}>이해관계자 · 관련 시스템</p><Lines text={p.stakeholders} /></div>
+            <div style={TILE}><p style={{ fontSize: 13, fontWeight: 700, marginBottom: 8, color: "var(--orange-text)" }}>제외 범위</p><Lines text={p.outOfScope} /></div>
+            <div style={TILE}><p style={{ fontSize: 13, fontWeight: 700, marginBottom: 8, color: "var(--green-text)" }}>완료 기준</p><Lines text={p.doneCriteria} /></div>
+            <div style={TILE}><p style={{ fontSize: 13, fontWeight: 700, marginBottom: 8, color: "var(--purple-text)" }}>이해관계자 · 관련 시스템</p><Lines text={p.stakeholders} /></div>
           </div>
         </section>
 
@@ -196,7 +196,7 @@ function OverviewTab({ project: p, tasks, milestones, onOpen, canEdit, participa
               })),
             ]} />
           </div>
-          {canEdit && <form onSubmit={onAddTask} className="row wrap" style={{ padding: "12px 20px", borderBottom: "1px solid #eef0f3" }}>
+          {canEdit && <form onSubmit={onAddTask} className="row wrap" style={{ padding: "12px 20px", borderBottom: "1px solid var(--line-soft)" }}>
             <input className="grow" style={{ minWidth: 220 }} aria-label="새 할일" placeholder="새 할일 제목" value={title} onChange={(e) => setTitle(e.target.value)} />
             <select aria-label="담당자" value={assignee} onChange={(e) => setAssignee(Number(e.target.value))}>
               <option value={0}>담당자 미지정</option>
@@ -218,7 +218,7 @@ function OverviewTab({ project: p, tasks, milestones, onOpen, canEdit, participa
                   <span><Badge status={t.status}>{taskStatusLabel[t.status]}</Badge></span>
                   <span style={{ minWidth: 0 }}><div>{t.title}</div>{(t.summary || t.blockedReason) && <div className="muted">{t.summary || t.blockedReason}</div>}</span>
                   <span style={{ fontSize: 13 }}>{t.assignee?.name ?? "—"}</span>
-                  <span style={{ fontSize: 13, color: t.dueDate && t.dueDate < todayIso() && t.status !== "DONE" ? "#b91c1c" : undefined }}>{md(t.dueDate)}</span>
+                  <span style={{ fontSize: 13, color: t.dueDate && t.dueDate < todayIso() && t.status !== "DONE" ? "var(--red-text)" : undefined }}>{md(t.dueDate)}</span>
                   <span className="muted">{t.jiraKey ?? "연동 전"}</span>
                 </button>
               ))}
@@ -232,7 +232,7 @@ function OverviewTab({ project: p, tasks, milestones, onOpen, canEdit, participa
           <h2 style={{ fontSize: 16, marginBottom: 10 }}>마일스톤 관리</h2>
           {milestones.length === 0 && <p className="muted">아직 마일스톤이 없어요.</p>}
           {milestones.map((m) => msEdit?.id === m.id ? (
-            <form key={m.id} className="stack" style={{ gap: 6, padding: "8px 0", borderTop: "1px solid #eef0f3" }}
+            <form key={m.id} className="stack" style={{ gap: 6, padding: "8px 0", borderTop: "1px solid var(--line-soft)" }}
                   onSubmit={(e) => { e.preventDefault(); if (msEdit.due && msEdit.name.trim()) saveMsDates.mutate(msEdit); }}>
               <input aria-label="마일스톤 이름" required value={msEdit.name} onChange={(e) => setMsEdit({ ...msEdit, name: e.target.value })} />
               <div className="row" style={{ gap: 6 }}>
@@ -250,10 +250,10 @@ function OverviewTab({ project: p, tasks, milestones, onOpen, canEdit, participa
               </div>
             </form>
           ) : (
-            <div key={m.id} className="row" style={{ padding: "8px 0", borderTop: "1px solid #eef0f3" }}>
+            <div key={m.id} className="row" style={{ padding: "8px 0", borderTop: "1px solid var(--line-soft)" }}>
               <input type="checkbox" aria-label={`${m.name} 완료`} checked={m.done} disabled={!canEdit}
                      onChange={() => toggleMs.mutate(m)} style={{ width: 17, height: 17, padding: 0 }} />
-              <span className="grow" style={m.done ? { color: "#5b6472", textDecoration: "line-through" } : undefined}>{m.name}</span>
+              <span className="grow" style={m.done ? { color: "var(--muted)", textDecoration: "line-through" } : undefined}>{m.name}</span>
               {canEdit ? (
                 <>
                   <span className="muted">{periodText(m)}</span>
@@ -365,20 +365,20 @@ function FilesTab({ projectId, files, canEdit }: { projectId: number; files: Att
       {canEdit && <div onClick={() => input.current?.click()}
            onDragOver={(e) => { e.preventDefault(); setDrag(true); }} onDragLeave={() => setDrag(false)}
            onDrop={(e) => { e.preventDefault(); setDrag(false); upload.mutate(Array.from(e.dataTransfer.files)); }}
-           style={{ padding: 32, border: `2px dashed ${drag ? "#2f5bea" : "#c5cbd4"}`, borderRadius: 12, background: "#f9fafb", textAlign: "center", cursor: "pointer" }}>
+           style={{ padding: 32, border: `2px dashed ${drag ? "var(--accent)" : "var(--line-strong)"}`, borderRadius: 12, background: "var(--surface-2)", textAlign: "center", cursor: "pointer" }}>
         <p style={{ fontWeight: 500, fontSize: 15 }}>{upload.isPending ? "올리는 중…" : "파일을 끌어다 놓거나 눌러서 선택"}</p>
         <p className="muted" style={{ marginTop: 6 }}>명세서, 회의록, 테스트 결과 등 · 할일 팝업에서 올리면 그 할일에 연결돼요</p>
         <input ref={input} type="file" multiple hidden onChange={(e) => { upload.mutate(Array.from(e.target.files ?? [])); e.target.value = ""; }} />
       </div>}
       {(upload.error || remove.error) && <p className="error">{((upload.error ?? remove.error) as Error).message}</p>}
       <div className="table-scroll">
-        <div style={{ minWidth: 760, border: "1px solid #e4e7ec", borderRadius: 10, overflow: "hidden" }}>
+        <div style={{ minWidth: 760, border: "1px solid var(--line)", borderRadius: 10, overflow: "hidden" }}>
           <div className="thead" style={{ display: "grid", gridTemplateColumns: COLS, gap: 14, padding: "10px 16px" }}>
             <span>파일명</span><span>연결된 할일</span><span>크기</span><span>올린 사람</span><span>날짜</span><span />
           </div>
           {files.length === 0 && <div className="empty">아직 첨부파일이 없어요.</div>}
           {files.map((f) => (
-            <div key={f.id} style={{ display: "grid", gridTemplateColumns: COLS, gap: 14, alignItems: "center", padding: "12px 16px", borderTop: "1px solid #eef0f3" }}>
+            <div key={f.id} style={{ display: "grid", gridTemplateColumns: COLS, gap: 14, alignItems: "center", padding: "12px 16px", borderTop: "1px solid var(--line-soft)" }}>
               <span className="row" style={{ minWidth: 0 }}><span className="badge badge-gray" style={{ borderRadius: 4 }}>{ext(f.name)}</span>
                 <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{f.name}</span></span>
               <span style={{ fontSize: 13 }}>{f.taskTitle ?? "—"}</span>
@@ -418,7 +418,7 @@ function DecisionsTab({ projectId, canEdit }: { projectId: number; canEdit: bool
       </form>}
       {data?.length === 0 && <p className="muted">"왜 이렇게 했지?"에 답할 수 있게 중요한 결정을 남겨 두세요.</p>}
       {data?.map((d) => (
-        <div key={d.id} style={{ display: "grid", gridTemplateColumns: "100px minmax(0,1fr)", gap: 16, padding: "12px 0", borderTop: "1px solid #eef0f3" }}>
+        <div key={d.id} style={{ display: "grid", gridTemplateColumns: "100px minmax(0,1fr)", gap: 16, padding: "12px 0", borderTop: "1px solid var(--line-soft)" }}>
           <strong>{md(d.decidedOn)}</strong>
           <div><div style={{ fontSize: 15, fontWeight: 500 }}>{d.what}</div><div className="muted">이유: {d.why || "—"} · 결정: {d.decidedBy || "—"}</div></div>
         </div>
@@ -455,12 +455,12 @@ function HistoryTab({ projectId }: { projectId: number }) {
         <div key={date}>
           <p style={{ fontSize: 13, fontWeight: 700, margin: "6px 0 4px" }}>{date}</p>
           {items.map((h) => (
-            <div key={h.id} className="row wrap" style={{ padding: "10px 0", borderTop: "1px solid #eef0f3" }}>
+            <div key={h.id} className="row wrap" style={{ padding: "10px 0", borderTop: "1px solid var(--line-soft)" }}>
               <span className="muted" style={{ width: 44 }}>{dateTime(h.changedAt).slice(-5)}</span>
               <span className={`badge badge-${KIND[h.kind][1]}`} style={{ borderRadius: 6 }}>{KIND[h.kind][0]}</span>
               <span className="grow" style={{ minWidth: 260 }}>
                 <strong style={{ fontWeight: 500 }}>{h.changedBy?.name}</strong> · {h.entityLabel} {fieldLabel[h.field] ?? h.field}{" "}
-                {h.kind !== "CREATE" && <><s style={{ color: "#8a93a1" }}>{h.oldValue ?? "없음"}</s> → </>}<strong>{h.newValue ?? "없음"}</strong>
+                {h.kind !== "CREATE" && <><s style={{ color: "var(--faint)" }}>{h.oldValue ?? "없음"}</s> → </>}<strong>{h.newValue ?? "없음"}</strong>
               </span>
             </div>
           ))}

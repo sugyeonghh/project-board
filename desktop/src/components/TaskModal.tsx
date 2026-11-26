@@ -105,8 +105,8 @@ export default function TaskModal({ taskId, onClose, canEdit = true, participant
                 )}
               </section>
               {t.status === "BLOCKED" && (
-                <section style={{ background: "#fdf3f3", borderRadius: 10, padding: "14px 16px" }}>
-                  <h3 style={{ fontSize: 13, color: "#9b1c1c", marginBottom: 6 }}>막힌 이유{t.blockedSince ? ` (${t.blockedSince}부터)` : ""}</h3>
+                <section style={{ background: "var(--red-soft-2)", borderRadius: 10, padding: "14px 16px" }}>
+                  <h3 style={{ fontSize: 13, color: "var(--red-text-2)", marginBottom: 6 }}>막힌 이유{t.blockedSince ? ` (${t.blockedSince}부터)` : ""}</h3>
                   <textarea rows={2} style={{ width: "100%" }} readOnly={!canEdit} defaultValue={t.blockedReason ?? ""} placeholder="누구의 무엇을 기다리는지 적어 주세요"
                             onBlur={(e) => e.target.value !== (t.blockedReason ?? "") && update.mutate({ blockedReason: e.target.value })} />
                 </section>
@@ -114,10 +114,10 @@ export default function TaskModal({ taskId, onClose, canEdit = true, participant
               <section>
                 <div className="row" style={{ marginBottom: 4 }}><h3 className="grow">세부 체크리스트</h3><span className="muted">{done} / {data.checklist.length} 완료</span></div>
                 {data.checklist.map((c) => (
-                  <label key={c.id} className="row" style={{ padding: "9px 0", borderTop: "1px solid #eef0f3", cursor: "pointer" }}>
+                  <label key={c.id} className="row" style={{ padding: "9px 0", borderTop: "1px solid var(--line-soft)", cursor: "pointer" }}>
                     <input type="checkbox" checked={c.done} disabled={!canEdit} style={{ width: 18, height: 18, padding: 0 }}
                            onChange={() => toggleCheck.mutate({ id: c.id, done: !c.done })} />
-                    <span style={c.done ? { color: "#5b6472", textDecoration: "line-through" } : undefined}>{c.text}</span>
+                    <span style={c.done ? { color: "var(--muted)", textDecoration: "line-through" } : undefined}>{c.text}</span>
                   </label>
                 ))}
                 {canEdit && <form className="row" style={{ marginTop: 8 }} onSubmit={(e) => { e.preventDefault(); if (newCheck.trim()) { addCheck.mutate(newCheck.trim()); setNewCheck(""); } }}>
@@ -132,7 +132,7 @@ export default function TaskModal({ taskId, onClose, canEdit = true, participant
                   const mine = canEdit && c.author.id === user?.id;
                   return (
                     <div key={c.id} className="row" style={{ alignItems: "flex-start" }}>
-                      <span style={{ width: 30, height: 30, borderRadius: "50%", background: "#e8eefd", color: "#1e40af", fontSize: 12, fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center", flex: "none" }}>{c.author.name.slice(0, 1)}</span>
+                      <span style={{ width: 30, height: 30, borderRadius: "50%", background: "var(--accent-soft)", color: "var(--accent-strong)", fontSize: 12, fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center", flex: "none" }}>{c.author.name.slice(0, 1)}</span>
                       <div className="grow" style={{ minWidth: 0 }}>
                         <div className="row" style={{ fontSize: 13, gap: 6 }}>
                           <strong>{c.author.name}</strong>
@@ -140,7 +140,7 @@ export default function TaskModal({ taskId, onClose, canEdit = true, participant
                           {mine && editComment?.id !== c.id && (
                             <span className="row" style={{ marginLeft: "auto", gap: 10 }}>
                               <button className="btn-link" style={{ padding: 0 }} onClick={() => { updateComment.reset(); setEditComment({ id: c.id, body: c.body }); }}>수정</button>
-                              <button className="btn-link" style={{ padding: 0, color: "#b91c1c" }} onClick={() => { deleteComment.reset(); setDelComment(c); }}>삭제</button>
+                              <button className="btn-link" style={{ padding: 0, color: "var(--red-text)" }} onClick={() => { deleteComment.reset(); setDelComment(c); }}>삭제</button>
                             </span>
                           )}
                         </div>
@@ -169,7 +169,7 @@ export default function TaskModal({ taskId, onClose, canEdit = true, participant
                   <ConfirmDialog title="코멘트를 삭제할까요?" confirmLabel="삭제" danger busy={deleteComment.isPending}
                                  onConfirm={() => deleteComment.mutate(delComment.id)} onCancel={() => setDelComment(null)}>
                     <p style={{ whiteSpace: "pre-wrap" }}>{delComment.body.length > 120 ? delComment.body.slice(0, 120) + "…" : delComment.body}</p>
-                    <p style={{ color: "#b91c1c", marginTop: 6 }}>삭제한 뒤에는 되돌릴 수 없어요.</p>
+                    <p style={{ color: "var(--red-text)", marginTop: 6 }}>삭제한 뒤에는 되돌릴 수 없어요.</p>
                   </ConfirmDialog>
                 )}
               </section>
@@ -177,16 +177,16 @@ export default function TaskModal({ taskId, onClose, canEdit = true, participant
                 <h3 style={{ marginBottom: 6 }}>변경 이력</h3>
                 {data.history.length === 0 && <p className="muted">아직 변경 이력이 없어요.</p>}
                 {data.history.slice(0, 10).map((h) => (
-                  <p key={h.id} style={{ fontSize: 13, padding: "6px 0", borderTop: "1px solid #eef0f3" }}>
+                  <p key={h.id} style={{ fontSize: 13, padding: "6px 0", borderTop: "1px solid var(--line-soft)" }}>
                     <span className="muted">{dateTime(h.changedAt)}</span> {h.changedBy?.name} · {fieldLabel[h.field] ?? h.field}{" "}
-                    {h.kind !== "CREATE" && <><s style={{ color: "#8a93a1" }}>{label(h.field, h.oldValue)}</s> → </>}<strong>{label(h.field, h.newValue)}</strong>
+                    {h.kind !== "CREATE" && <><s style={{ color: "var(--faint)" }}>{label(h.field, h.oldValue)}</s> → </>}<strong>{label(h.field, h.newValue)}</strong>
                   </p>
                 ))}
               </section>
             </div>
 
             <aside className="stack" style={{ flex: "1 1 250px", minWidth: 0, gap: 18 }}>
-              <section style={{ background: "#f9fafb", borderRadius: 12, padding: "16px 18px", display: "grid", gridTemplateColumns: "72px minmax(0,1fr)", gap: "10px 8px", alignItems: "center", fontSize: 14 }}>
+              <section style={{ background: "var(--surface-2)", borderRadius: 12, padding: "16px 18px", display: "grid", gridTemplateColumns: "72px minmax(0,1fr)", gap: "10px 8px", alignItems: "center", fontSize: 14 }}>
                 <span className="muted">상태</span>
                 <select disabled={!canEdit} value={t.status} onChange={(e) => update.mutate({ status: e.target.value as TaskStatus })}>
                   {Object.entries(taskStatusLabel).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
@@ -210,7 +210,7 @@ export default function TaskModal({ taskId, onClose, canEdit = true, participant
               <section className="stack" style={{ gap: 8 }}>
                 <h3>첨부파일</h3>
                 {data.attachments.map((a) => (
-                  <button key={a.id} className="row btn-link" style={{ color: "#111827", textAlign: "left" }} onClick={() => downloadAttachment(a.id, a.name)}>
+                  <button key={a.id} className="row btn-link" style={{ color: "var(--text)", textAlign: "left" }} onClick={() => downloadAttachment(a.id, a.name)}>
                     <span className="badge badge-gray" style={{ borderRadius: 4 }}>{ext(a.name)}</span>
                     <span className="grow">{a.name}</span><span className="muted">{fileSize(a.sizeBytes)}</span>
                   </button>

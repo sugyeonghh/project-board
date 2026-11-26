@@ -7,10 +7,10 @@ import { Badge, Chips, Loading } from "../components/ui";
 import { md, taskStatusLabel } from "../lib/format";
 
 const GROUPS: { key: MyTaskItem["group"]; label: string; color?: string; bg: string }[] = [
-  { key: "late", label: "기한 지남", color: "#b91c1c", bg: "#fdf3f3" },
-  { key: "today", label: "오늘", color: "#1e40af", bg: "#eef3fe" },
-  { key: "week", label: "이번 주", bg: "#f9fafb" },
-  { key: "later", label: "다음 주 이후", bg: "#f9fafb" },
+  { key: "late", label: "기한 지남", color: "var(--red-text)", bg: "var(--red-soft-2)" },
+  { key: "today", label: "오늘", color: "var(--accent-strong)", bg: "var(--blue-soft)" },
+  { key: "week", label: "이번 주", bg: "var(--surface-2)" },
+  { key: "later", label: "다음 주 이후", bg: "var(--surface-2)" },
 ];
 type Filter = "all" | "task" | "ops";
 type View = "open" | "done";
@@ -59,17 +59,17 @@ export default function MyTasksPage() {
         {items.length === 0 && <div className="card empty">완료한 항목이 없어요.</div>}
         {items.length > 0 && (
           <section className="card" style={{ overflow: "hidden" }}>
-            <div className="row" style={{ padding: "14px 20px", background: "#f0f9f3" }}>
+            <div className="row" style={{ padding: "14px 20px", background: "var(--green-soft-2)" }}>
               <h2 style={{ fontSize: 16 }}>완료한 항목</h2><span className="muted">{items.length}건 · 최근 완료 순</span>
             </div>
             {items.map((t) => (
               <div key={`${t.source}-${t.id}`} className="list-row">
                 <span aria-hidden style={{ width: 18, textAlign: "center", color: "#2f9e5b", fontWeight: 700 }}>✓</span>
-                <Link to={t.projectId ? `/projects/${t.projectId}?task=${t.id}` : t.source === "OPS" ? `/ops?open=${t.id}` : "/ops"} className="grow" style={{ color: "#5b6472" }}>
+                <Link to={t.projectId ? `/projects/${t.projectId}?task=${t.id}` : t.source === "OPS" ? `/ops?open=${t.id}` : "/ops"} className="grow" style={{ color: "var(--muted)" }}>
                   <div style={{ textDecoration: "line-through" }}>{t.title}</div><div className="muted">{t.projectName}</div>
                 </Link>
                 <span className="muted" style={{ fontSize: 13 }}>마감 {md(t.dueDate)}</span>
-                <span style={{ width: 84, textAlign: "right", fontSize: 13, color: "#166534" }}>{t.doneOn ? `${md(t.doneOn)} 완료` : "완료"}</span>
+                <span style={{ width: 84, textAlign: "right", fontSize: 13, color: "var(--green-text)" }}>{t.doneOn ? `${md(t.doneOn)} 완료` : "완료"}</span>
               </div>
             ))}
           </section>
@@ -102,11 +102,11 @@ export default function MyTasksPage() {
               <div key={`${t.source}-${t.id}`} className="list-row">
                 <input type="checkbox" aria-label={`${t.title} 완료`} style={{ width: 18, height: 18, padding: 0 }}
                        onChange={() => complete.mutate(t)} />
-                <Link to={t.projectId ? `/projects/${t.projectId}?task=${t.id}` : t.source === "OPS" ? `/ops?open=${t.id}` : "/ops"} className="grow" style={{ color: "#111827" }}>
+                <Link to={t.projectId ? `/projects/${t.projectId}?task=${t.id}` : t.source === "OPS" ? `/ops?open=${t.id}` : "/ops"} className="grow" style={{ color: "var(--text)" }}>
                   <div>{t.title}</div><div className="muted">{t.projectName}</div>
                 </Link>
                 <Badge status={t.status}>{taskStatusLabel[t.status as keyof typeof taskStatusLabel] ?? "진행 중"}</Badge>
-                <span style={{ width: 48, textAlign: "right", fontSize: 13, color: g.color ?? "#5b6472", fontWeight: g.color ? 700 : 400 }}>
+                <span style={{ width: 48, textAlign: "right", fontSize: 13, color: g.color ?? "var(--muted)", fontWeight: g.color ? 700 : 400 }}>
                   {g.key === "today" ? "오늘" : md(t.dueDate)}
                 </span>
               </div>
